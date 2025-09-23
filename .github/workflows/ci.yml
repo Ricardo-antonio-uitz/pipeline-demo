@@ -9,6 +9,8 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
 
     steps:
       - name: Checkout código
@@ -22,5 +24,16 @@ jobs:
       - name: Instalar dependencias
         run: pip install -r requirements.txt
 
-      - name: Ejecutar pruebas
-        run: pytest
+      - name: Mostrar estructura (debug)
+        run: |
+          echo "PWD: $(pwd)"
+          echo "Lista (raíz):"
+          ls -la
+          echo "Lista recursiva:"
+          ls -R
+
+      - name: Ejecutar pruebas (con PYTHONPATH)
+        run: |
+          echo "PYTHONPATH=$PYTHONPATH"
+          python -c "import sys; print('sys.path:', sys.path)"
+          pytest -q
